@@ -1,0 +1,22 @@
+#!/bin/sh
+
+ROOT_DIR="$(dirname "$0")/pre-commit.d"
+
+RESULT=0
+for hook in ${ROOT_DIR}/*; do
+    bash $hook
+    HOOK_RESULT=$?
+    if [ $HOOK_RESULT != 0 ]; then
+        RESULT=$(($RESULT+$HOOK_RESULT))
+    fi
+done
+
+if [ $RESULT != 0 ]; then
+    /bin/echo ""
+    /bin/echo -e "\e[41m                                                                          \e[49m"
+    /bin/echo -e "\e[41m There was an error in at least one of hook scripts. commit was aborted!! \e[49m"
+    /bin/echo -e "\e[41m             Don't forget to add files to commit after fixes.             \e[49m"
+    /bin/echo -e "\e[41m                                                                          \e[49m"
+fi
+
+exit $RESULT

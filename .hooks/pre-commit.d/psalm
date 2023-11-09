@@ -1,0 +1,33 @@
+#!/bin/sh
+
+########################################################################################################################
+#                 THIS FILE MEANT TO BE EXECUTED BY GIT HOOK AND CHECK CHANGED FILES BY PSALM TOOL                   #
+########################################################################################################################
+
+COMMIT_RANGE='HEAD'
+CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRTUXB "${COMMIT_RANGE}" | grep ".php\$")
+
+if [ -z "$CHANGED_FILES" ]
+then
+  exit 0;
+fi
+
+/bin/echo -e "\e[0;33mValidating static php code...\e[0m"
+
+docker exec -t mcatalog_php php vendor/bin/psalm --no-cache ${CHANGED_FILES}
+RESULT=$?
+
+echo $RESULT;
+
+if [ $RESULT -eq 0 ]
+then
+  /bin/echo -e "\e[30;42m                                                                          \e[0m"
+  /bin/echo -e "\e[30;42m [OK] PSALM rules are valid                                               \e[0m"
+  /bin/echo -e "\e[30;42m                                                                          \e[0m"
+else
+  /bin/echo -e "\e[30;41m                                                                          \e[0m"
+  /bin/echo -e "\e[30;41m [ERROR] PSALM rules are invalid!                                         \e[0m"
+  /bin/echo -e "\e[30;41m                                                                          \e[0m"
+fi
+
+exit $RESULT
