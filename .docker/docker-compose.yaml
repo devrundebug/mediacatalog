@@ -36,6 +36,7 @@ services:
             - ./php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
         environment:
             PHP_CS_FIXER_IGNORE_ENV: 1
+            PHP_CS_FIXER_ALLOW_XDEBUG: 1
             PHP_IDE_CONFIG: serverName=mcatalog-php
             PSALM_ALLOW_XDEBUG: 1;
         stdin_open: true
