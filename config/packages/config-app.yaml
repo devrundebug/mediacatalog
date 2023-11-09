@@ -1,3 +1,6 @@
 parameters:
     appConfig:
         versionFile: 'version.app'
+        process:
+            workdir: "opt/workdir"
+            trash: "./opt/trash"
