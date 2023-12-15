@@ -27,4 +27,16 @@ class FileRepository extends ServiceEntityRepository
 
         return $queryBuilder->getQuery()->getOneOrNullResult();
     }
+
+    public function findAllByChecksum(string $checksum)
+    {
+        $queryBuilder = $this->createQueryBuilder('f')
+            ->where('f.checksum = :checksum');
+
+        $queryBuilder->setParameters([
+            'checksum' => $checksum,
+        ]);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
 }

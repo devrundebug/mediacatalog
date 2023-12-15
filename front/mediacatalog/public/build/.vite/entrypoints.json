@@ -1,0 +1,19 @@
+{
+  "base": "/static/build/",
+  "entryPoints": {
+    "app": {
+      "js": [
+        "http://127.0.0.1:5173/static/build/src/main.js"
+      ]
+    }
+  },
+  "legacy": false,
+  "metadatas": {},
+  "version": [
+    "6.3.0",
+    6,
+    3,
+    0
+  ],
+  "viteServer": "http://127.0.0.1:5173"
+}

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace DevRunDebug\MediaCatalog\Controller;
+namespace DevRunDebug\MediaCatalog\Controller\Api;
 
 use DevRunDebug\MediaCatalog\Library\Version;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-class VersionController
+class GetApiVersionController
 {
     private Version $version;
 
@@ -17,12 +17,12 @@ class VersionController
         $this->version = $version;
     }
 
-    #[Route('/version')]
+    #[Route('/api/version', name: 'api_get_version', methods: ['GET'])]
     public function __invoke(): JsonResponse
     {
         return new JsonResponse(
             [
-                'app' => 'monkey',
+                'app' => 'media-catalog',
                 'version' => $this->version->getAppVersion(),
             ],
             200
