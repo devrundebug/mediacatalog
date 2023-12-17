@@ -1,4 +1,2 @@
 pentatrion_vite:
-    public_directory: public/static
     build_directory: build
-    throw_on_missing_entry: true
