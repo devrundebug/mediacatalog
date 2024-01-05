@@ -9,7 +9,6 @@ import vue from "@vitejs/plugin-vue";
 const basicPlaygroundDir = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig(({command, mode, ssrBuild}) => {
-    console.log(command, mode, ssrBuild)
 
     const commonConfig = {
         base: '/build/',
