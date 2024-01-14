@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DevRunDebug\MediaCatalog\Cli;
 
-use DevRunDebug\MediaCatalog\Service\FileService;
+use DevRunDebug\MediaCatalog\Service\ScannerStorageService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -13,27 +13,27 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 #[\AllowDynamicProperties] #[AsCommand(name: 'app:scan-files')]
-class ScanFilesCommand extends Command
+class ScanStorageCommand extends Command
 {
     private EntityManagerInterface $entityManager;
     private array $appConfig;
 
-    private FileService $fileService;
+    private ScannerStorageService $scannerStorageService;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        FileService $fileService,
+        ScannerStorageService $fileService,
         ParameterBagInterface $containerBag
     ) {
         $this->entityManager = $entityManager;
         $this->appConfig = $containerBag->get('appConfig');
-        $this->fileService = $fileService;
+        $this->scannerStorageService = $fileService;
         parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->fileService->scanFiles();
+        $this->scannerStorageService->scan();
 
         return Command::SUCCESS;
     }

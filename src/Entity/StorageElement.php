@@ -4,36 +4,39 @@ declare(strict_types=1);
 
 namespace DevRunDebug\MediaCatalog\Entity;
 
-use DevRunDebug\MediaCatalog\Repository\FileRepository;
+use DevRunDebug\MediaCatalog\Repository\StorageElementRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-#[ORM\Entity(repositoryClass: FileRepository::class)]
-class File
+#[ORM\Entity(repositoryClass: StorageElementRepository::class)]
+class StorageElement
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     #[ORM\Column(type: 'integer')]
-    private int $id;
+    private ?int $id = null;
 
     #[ORM\Column(type: 'string')]
-    private string $localization;
+    private ?string $path = null;
+
+    #[ORM\Column(type: 'integer')]
+    private ?int $depth = null;
 
     #[ORM\Column(type: 'enum_localization_type')]
-    private string $type;
+    private ?string $type = null;
 
-    #[ORM\Column(type: 'string')]
-    private string $checksum;
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $checksum = null;
 
     #[ORM\Column(type: 'datetime', nullable: true, options: ['default' => 'CURRENT_TIMESTAMP', 'comment' => 'Creation date'])]
     #[Gedmo\Timestampable(on: 'create')]
-    private ?\DateTimeInterface $created_at;
+    private ?\DateTimeInterface $created_at = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     #[Gedmo\Timestampable(on: 'update')]
-    private ?\DateTimeInterface $updated_at;
+    private ?\DateTimeInterface $updated_at = null;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -45,19 +48,19 @@ class File
         return $this;
     }
 
-    public function getLocalization(): string
+    public function getPath(): ?string
     {
-        return $this->localization;
+        return $this->path;
     }
 
-    public function setLocalization(string $localization): self
+    public function setPath(string $path): self
     {
-        $this->localization = $localization;
+        $this->path = $path;
 
         return $this;
     }
 
-    public function getType(): string
+    public function getType(): ?string
     {
         return $this->type;
     }
@@ -69,12 +72,12 @@ class File
         return $this;
     }
 
-    public function getChecksum(): string
+    public function getChecksum(): ?string
     {
         return $this->checksum;
     }
 
-    public function setChecksum(string $checksum): self
+    public function setChecksum(?string $checksum): self
     {
         $this->checksum = $checksum;
 
@@ -101,6 +104,18 @@ class File
     public function setUpdatedAt(?\DateTimeInterface $updated_at): self
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getDepth(): ?int
+    {
+        return $this->depth;
+    }
+
+    public function setDepth(int $depth): self
+    {
+        $this->depth = $depth;
 
         return $this;
     }

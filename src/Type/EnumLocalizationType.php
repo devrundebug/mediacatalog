@@ -31,7 +31,7 @@ class EnumLocalizationType extends Type
         return true;
     }
 
-    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): mixed
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if (!in_array($value, [self::TYPE_DIRECTORY, self::TYPE_FILE], true)) {
             throw new \InvalidArgumentException('Invalid status');

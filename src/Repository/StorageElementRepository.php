@@ -4,26 +4,33 @@ declare(strict_types=1);
 
 namespace DevRunDebug\MediaCatalog\Repository;
 
-use DevRunDebug\MediaCatalog\Entity\File;
+use DevRunDebug\MediaCatalog\Entity\StorageElement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
-class FileRepository extends ServiceEntityRepository
+class StorageElementRepository extends ServiceEntityRepository
 {
     public function __construct(\Doctrine\Persistence\ManagerRegistry $registry)
     {
-        parent::__construct($registry, File::class);
+        parent::__construct($registry, StorageElement::class);
     }
 
-    public function findOneByLocalizationAndChecksum(string $localization, string $checksum): ?File
+    public function findOneByLocalizationAndChecksum(string $path, ?string $checksum): ?StorageElement
     {
         $queryBuilder = $this->createQueryBuilder('f')
-            ->where('f.localization = :localization and f.checksum = :checksum')
+            ->where('f.path = :path')
             ->setMaxResults(1);
 
-        $queryBuilder->setParameters([
-            'localization' => $localization,
-            'checksum' => $checksum,
-        ]);
+        $bindParams = [
+            'path' => $path,
+        ];
+
+        if ($checksum) {
+            $queryBuilder->andWhere('f.checksum = :checksum');
+
+            $bindParams['checksum'] = $checksum;
+        }
+
+        $queryBuilder->setParameters($bindParams);
 
         return $queryBuilder->getQuery()->getOneOrNullResult();
     }
